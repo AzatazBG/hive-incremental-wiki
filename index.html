@@ -118,6 +118,26 @@ details.chap[open]>summary{margin-bottom:10px}
 .secgrid .tile .s{font-weight:600}
 .badge{position:absolute;top:8px;right:8px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hb{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+.hivewrap{padding:16px;display:flex;justify-content:center;background:linear-gradient(180deg,#e9a43a,#c98226);overflow:auto}
+.hive{position:relative;touch-action:none;user-select:none}
+.slot{position:absolute;width:72px;height:62px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);background:#3b2a14;cursor:pointer}
+.slot .in{position:absolute;inset:4px;clip-path:inherit;background:#f3c56b;display:flex;align-items:center;justify-content:center;font-size:16px}
+.slot:hover .in{filter:brightness(1.12)}
+.slot img{width:44px;height:44px;object-fit:contain;margin-top:-6px;pointer-events:none}
+.slot .lv{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);background:#3b2a14;color:#fff;font:700 11px Fredoka,system-ui,sans-serif;padding:0 6px;border-radius:8px;pointer-events:none}
+.slot.lock{opacity:.35;cursor:not-allowed}
+.hbrow{display:flex;gap:10px;align-items:center;margin:4px 0}
+.hbrow label{min-width:92px;font-weight:800}
+.hbrow input[type=range]{flex:1;accent-color:var(--amber2)}
+.hbin{width:100%;font:inherit;font-weight:700;padding:8px 12px;border:3px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}
+.hbpal{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;max-height:330px;overflow:auto;padding:2px}
+.pb{font:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border:3px solid;border-radius:14px;background:var(--card);color:var(--ink);cursor:pointer;font-weight:800;font-size:12px}
+.pb img{width:44px;height:44px;object-fit:contain}
+.pb.on{background:var(--amber);color:#3b2a14;transform:translateY(-2px);box-shadow:var(--shadow)}
+.hbtools button{font-size:14px}
+.hbx{border:0;background:none;color:inherit;cursor:pointer;font-weight:800;padding:0 2px}
+@media (max-width:1100px){.hb{grid-template-columns:1fr}}
 .foot{margin-top:40px;color:var(--ink2);font-size:13px;font-weight:600}
 @media (max-width:900px){
   .layout{grid-template-columns:1fr}
@@ -250,7 +270,7 @@ const SECTIONS=[
  ['Start',[['home','Home','logo'],['guide','Beginner Guide',B.Config.CurrencyIcons.Pollen]]],
  ['Hive',[['bees','Bees','114700062240900'],['abilities','Abilities','123191420616917'],['hatching','Eggs & Hatching','124989973224745'],['leveling','Bee Levels','116504239572854']]],
  ['Stuff',[['items','Items','84626524689033'],['boosts','Boosts','140187842403040'],['equipment','Equipment','87851673685958'],['sprouts','Sprouts','135264273373536'],['lootbags','Lootbags','118983622154100']]],
- ['Progress',[['progression','Upgrades & Prestige','123162489085081'],['skills','Skill Tree','114397410766307'],['quests','Quests','106062780127145'],['index','Bee Index','103106126866305']]],
+ ['Progress',[['progression','Upgrades & Prestige','123162489085081'],['builder','Hive Builder','114700062240900'],['skills','Skill Tree','114397410766307'],['quests','Quests','106062780127145'],['index','Bee Index','103106126866305']]],
  ['Systems',[['mixer','Mixer','127345897871313'],['shops','Shops','84626524689033'],['daily','Daily Rewards','107436572337963'],['mechanics','Other Mechanics','131602999707518']]],
 ];
 const navIcon=i=>i==='logo'?'icons/logo.png':ICON(i);
@@ -265,7 +285,7 @@ const eqCount=Object.entries(A.Equipment).filter(([k])=>k!=='Categories').reduce
 
 P.home=()=>{
   const sec=SECTIONS.flatMap(s=>s[1]).filter(s=>s[0]!=='home');
-  const blurb={guide:'How to start strong',bees:`${Object.keys(BEES).length} bees, stats & abilities`,abilities:`${Object.keys(A.Abilities).length} token abilities`,hatching:'Egg odds & Royal Jelly',leveling:'How bees grow',items:`${Object.keys(ITEMS).length} items`,boosts:`${Object.keys(A.Boosts).length} buffs`,equipment:`${eqCount} tools & gear`,sprouts:'Giant flowers full of loot',lootbags:'Bags of goodies',progression:'Pollen, Honey & Prestige',skills:`${Object.keys(B.SkillTree).length} skills`,quests:`${totalQuests} quests`,index:'Collection rewards',mixer:'Craft boosts',shops:'Honey, Tickets & Store',daily:'Endless daily streak',mechanics:'Offline, storms & more'};
+  const blurb={guide:'How to start strong',bees:`${Object.keys(BEES).length} bees, stats & abilities`,abilities:`${Object.keys(A.Abilities).length} token abilities`,hatching:'Egg odds & Royal Jelly',leveling:'How bees grow',items:`${Object.keys(ITEMS).length} items`,boosts:`${Object.keys(A.Boosts).length} buffs`,equipment:`${eqCount} tools & gear`,sprouts:'Giant flowers full of loot',lootbags:'Bags of goodies',progression:'Pollen, Honey & Prestige',builder:'Plan & share hives',skills:`${Object.keys(B.SkillTree).length} skills`,quests:`${totalQuests} quests`,index:'Collection rewards',mixer:'Craft boosts',shops:'Honey, Tickets & Store',daily:'Endless daily streak',mechanics:'Offline, storms & more'};
   return `<div class="card home-hero"><img src="icons/logo.png" alt=""><div><h1>Hive Incremental Wiki</h1><p>Everything in the game in one place: every bee, ability, item, tool, skill, quest and recipe, with the real numbers straight from the game.</p><p class="muted" style="color:#5a3f17">Released 7 November 2026 · made by JstAzataz</p></div></div>
   <h2>Browse</h2><div class="grid secgrid">${sec.map(([id,n,i])=>`<a class="card tile" href="#${id}"><img src="${navIcon(i)}" alt=""><div><div class="n">${n}</div><div class="s">${blurb[id]||''}</div></div></a>`).join('')}</div>
   <h2><img src="${ICON(BEES.Ember.Icon)}" alt="">Featured bees</h2><div class="grid">${sortBees().filter(([,b])=>['Mythic','Special'].includes(b.Rarity)).map(([k,b])=>tile('#bee/'+slug(k),b.Icon,b.Name,rpill(b.Rarity))).join('')}</div>`;
@@ -444,6 +464,170 @@ ${[['Offline earnings','139599877563911','While you are away you keep earning 20
 ['Settings','93040214933645','Toggle music and sounds, change UI size and more from the Settings menu.'],
 ['Update Log','121378188513009','The gift button next to your level opens the Update Log with every patch note.']].map(([t,i,d])=>`<div class="card" style="display:flex;gap:12px"><img src="${ICON(i)}" style="width:52px;height:52px;object-fit:contain"><div><h3 style="margin:0 0 4px">${t}</h3><div style="font-size:14px">${d}</div></div></div>`).join('')}</div>
 <h2>Bonus types</h2><div class="chips">${Object.entries(BONUSI).map(([k,v])=>`<span class="chip"><img src="${ICON(v)}">${esc(k)}</span>`).join('')}</div>`;
+// ================= HIVE BUILDER =================
+const HB_COLS=5,HB_ROWS=11,HB_MAX=HB_COLS*HB_ROWS,HB_W=72,HB_H=62;
+const HB_MAXLVL=B.BeeLevel?.MaxLevel||B.BeeLeveling.MaxLevel||50;
+let HB=null,HBbrush=null,HBlevel=HB_MAXLVL,HBpaint=false,HBfilter='All',HBsearch='';
+function hbNew(){return {name:'My Hive',slots:HB_MAX,cells:Array(HB_MAX).fill(null)}}
+function hbEncode(h){
+  const toks=h.cells.slice(0,h.slots).map(c=>c?`${c.k}-${c.l}`:'_');
+  const out=[];for(let i=0;i<toks.length;){let j=i;while(j<toks.length&&toks[j]===toks[i])j++;out.push(j-i>1?`${toks[i]}*${j-i}`:toks[i]);i=j}
+  return encodeURIComponent(h.name.slice(0,40))+'|'+h.slots+'|'+out.join('.');
+}
+function hbDecode(s){
+  try{const [n,sl,body]=s.split('|');const h=hbNew();h.name=decodeURIComponent(n||'My Hive').slice(0,40);h.slots=Math.max(1,Math.min(HB_MAX,parseInt(sl)||HB_MAX));
+    let i=0;(body||'').split('.').forEach(t=>{if(!t)return;let [tok,cnt]=t.split('*');cnt=Math.max(1,parseInt(cnt)||1);
+      let c=null;if(tok!=='_'){const m=tok.match(/^(.+)-(\d+)$/);if(m&&BEES[m[1]])c={k:m[1],l:Math.max(1,Math.min(HB_MAXLVL,+m[2]))}}
+      for(let x=0;x<cnt&&i<HB_MAX;x++)h.cells[i++]=c?{...c}:null});
+    return h}catch(e){return hbNew()}
+}
+// slot index -> position (bottom-up rows, left to right; odd columns shifted down half a cell)
+function hbPos(i){const row=Math.floor(i/HB_COLS),col=i%HB_COLS;const r=HB_ROWS-1-row;return [col*HB_W*0.75,r*HB_H+(col%2?HB_H/2:0)]}
+const HB_WIDTH=HB_W*0.75*(HB_COLS-1)+HB_W,HB_HEIGHT=HB_ROWS*HB_H+HB_H/2;
+function hbStats(h){
+  const used=h.cells.slice(0,h.slots).filter(Boolean);
+  const rar={},col={},ab={},beeCount={};let gps=0;
+  used.forEach(c=>{const b=BEES[c.k];rar[b.Rarity]=(rar[b.Rarity]||0)+1;col[b.Color]=(col[b.Color]||0)+1;beeCount[c.k]=(beeCount[c.k]||0)+1;
+    const st=b.Stats;gps+=st.Gather*(1+(c.l-1)*(B.BeeLeveling.PerLevel.Gather||0))/Math.max(.1,st.GatherTime||1);
+    (st.Tokens||[]).forEach(t=>{if((t.Level||1)<=c.l)ab[t.Ability]=(ab[t.Ability]||0)+1})});
+  const avg=used.length?used.reduce((a,c)=>a+c.l,0)/used.length:0;
+  return {used:used.length,rar,col,ab,beeCount,gps,avg};
+}
+P.builder=(code)=>{
+  HB=code?hbDecode(code):(HB||hbNew());
+  return `${H('Hive Builder',ICON(BEES.Ember?.Icon||'114700062240900'),'Plan your dream hive. Pick a bee, click or drag across slots to place it, then share the link or save it as a picture.')}
+  <div class="hb">
+    <div>
+      <div class="card" style="padding:12px;margin-bottom:12px">
+        <div class="hbrow"><input id="hbName" class="hbin" maxlength="40" value="${esc(HB.name)}" placeholder="Hive name"></div>
+        <div class="hbrow"><label>Slots <b id="hbSlotsV">${HB.slots}</b></label><input id="hbSlots" type="range" min="1" max="${HB_MAX}" value="${HB.slots}"></div>
+        <div class="hbrow"><label>Level <b id="hbLvlV">${HBlevel}</b></label><input id="hbLvl" type="range" min="1" max="${HB_MAXLVL}" value="${HBlevel}"></div>
+      </div>
+      <div class="hivewrap card"><div class="hive" id="hive" style="width:${HB_WIDTH}px;height:${HB_HEIGHT}px"></div></div>
+    </div>
+    <div>
+      <div class="tabs hbtools">
+        <button id="hbErase" title="Eraser">🧽 Eraser</button>
+        <button id="hbFill">🪣 Fill empty</button>
+        <button id="hbAllLvl">⬆️ Set all to level</button>
+        <button id="hbClear">🗑️ Clear</button>
+      </div>
+      <div class="card" style="padding:12px">
+        <div class="hbrow" style="margin-bottom:8px"><input id="hbSearch" class="hbin" placeholder="Search bees…" value="${esc(HBsearch)}"></div>
+        <div class="tabs" id="hbRar" style="margin:0 0 10px"></div>
+        <div class="hbpal" id="hbPal"></div>
+      </div>
+      <div class="tabs hbtools" style="margin-top:14px">
+        <button class="on" id="hbLink">🔗 Copy share link</button>
+        <button id="hbImg">📋 Copy image</button>
+        <button id="hbPng">🖼️ Download PNG</button>
+        <button id="hbSave">💾 Save</button>
+      </div>
+      <div id="hbMsg" class="muted" style="font-weight:800;min-height:20px"></div>
+      <div id="hbSaved"></div>
+      <div id="hbStats"></div>
+    </div>
+  </div>`;
+};
+function hbSync(){try{history.replaceState(null,'','#builder/'+hbEncode(HB))}catch(e){}}
+function hbMsg(t){const m=$('#hbMsg');if(m){m.textContent=t;clearTimeout(hbMsg.t);hbMsg.t=setTimeout(()=>m.textContent='',3500)}}
+function hbDrawHive(){
+  const hv=$('#hive');if(!hv)return;
+  hv.innerHTML=HB.cells.map((c,i)=>{const [x,y]=hbPos(i);const lock=i>=HB.slots;const b=c&&BEES[c.k];
+    return `<div class="slot${lock?' lock':''}" data-i="${i}" style="left:${x}px;top:${y}px"><div class="in" style="${b?`background:${RAR[b.Rarity]}`:''}">${b?`<img src="${ICON(b.Icon)}" alt="${esc(b.Name)}" draggable="false"><span class="lv">${c.l}</span>`:lock?'🔒':''}</div></div>`}).join('');
+  hbDrawStats();hbSync();
+}
+function hbDrawPalette(){
+  const rs=['All',...RORDER.filter(r=>Object.values(BEES).some(b=>b.Rarity===r))];
+  $('#hbRar').innerHTML=rs.map(r=>`<button class="${r===HBfilter?'on':''}" data-r="${r}">${r==='All'?'All':`<span class="pill" style="background:${RAR[r]}">${r}</span>`}</button>`).join('');
+  const q=HBsearch.toLowerCase();
+  $('#hbPal').innerHTML=sortBees().filter(([k,b])=>(HBfilter==='All'||b.Rarity===HBfilter)&&(!q||b.Name.toLowerCase().includes(q))).map(([k,b])=>`<button class="pb${HBbrush===k?' on':''}" data-k="${esc(k)}" draggable="true" title="${esc(b.Name)}" style="border-color:${RAR[b.Rarity]}"><img src="${ICON(b.Icon)}" alt="" draggable="false"><span>${esc(b.Name.replace(/ Bee$/,''))}</span></button>`).join('');
+  $('#hbErase').classList.toggle('on',HBbrush==='__erase');
+}
+function hbDrawStats(){
+  const s=hbStats(HB);const el=$('#hbStats');if(!el)return;
+  el.innerHTML=`<h2 style="margin-top:18px">Hive stats</h2>
+  <div class="kv"><div><span>Bees</span><b>${s.used} / ${HB.slots}</b></div><div><span>Avg level</span><b>${s.avg.toFixed(1)}</b></div><div><span>Base pollen / sec</span><b>${fmt(s.gps)}</b></div><div><span>Unique bees</span><b>${Object.keys(s.beeCount).length}</b></div></div>
+  <div class="two" style="margin-top:12px">
+   <div class="card"><b class="f">Rarity</b>${RORDER.filter(r=>s.rar[r]).map(r=>`<div style="display:flex;gap:8px;align-items:center;margin-top:6px">${rpill(r)}<div class="bar" style="flex:1"><i style="width:${s.rar[r]/Math.max(1,s.used)*100}%;background:${RAR[r]}"></i></div><b>${s.rar[r]}</b></div>`).join('')||'<p class="muted">Empty hive</p>'}</div>
+   <div class="card"><b class="f">Colors</b>${Object.entries(s.col).map(([c,n])=>`<div style="display:flex;gap:8px;align-items:center;margin-top:6px">${cpill(c)}<div class="bar" style="flex:1"><i style="width:${n/Math.max(1,s.used)*100}%;background:${BCOL[c]?.Color}"></i></div><b>${n}</b></div>`).join('')||'<p class="muted">Empty hive</p>'}</div>
+  </div>
+  <h3 style="margin:14px 0 6px">Active abilities</h3><div class="chips">${Object.entries(s.ab).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<a class="chip" href="#ability/${slug(a)}"><img src="${ICON(A.Abilities[a]?.Icon)}">${esc(a)} ×${n}</a>`).join('')||'<span class="muted">None yet</span>'}</div>
+  <p class="muted" style="font-size:12.5px">Pollen/sec is a rough base estimate from bee stats and levels, without upgrades, boosts or equipment.</p>`;
+}
+function hbSaved(){let l=[];try{l=JSON.parse(localStorage.getItem('hbSaved')||'[]')}catch(e){}return l}
+function hbDrawSaved(){const l=hbSaved();const el=$('#hbSaved');if(!el)return;
+  el.innerHTML=l.length?`<h3 style="margin:10px 0 6px">Saved hives</h3><div class="chips">${l.map((x,i)=>`<span class="chip" style="padding-left:9px"><a href="#builder/${x.c}" style="text-decoration:none">${esc(x.n)}</a> <button data-del="${i}" class="hbx" title="Delete">✕</button></span>`).join('')}</div>`:''}
+function hbPlace(i){if(i>=HB.slots||!HBbrush)return;
+  const nv=HBbrush==='__erase'?null:{k:HBbrush,l:HBlevel};const cur=HB.cells[i];
+  if(JSON.stringify(cur)===JSON.stringify(nv))return;HB.cells[i]=nv;hbDrawHive()}
+function initBuilder(){
+  if(!$('#hive'))return;
+  hbDrawPalette();hbDrawHive();hbDrawSaved();
+  const hv=$('#hive');
+  hv.onpointerdown=e=>{const s=e.target.closest('.slot');if(!s)return;e.preventDefault();
+    if(!HBbrush){const c=HB.cells[+s.dataset.i];if(c){HBbrush=c.k;HBlevel=c.l;$('#hbLvl').value=c.l;$('#hbLvlV').textContent=c.l;hbDrawPalette();hbMsg('Picked '+BEES[c.k].Name+'. Click slots to paint it.')}else hbMsg('Pick a bee on the right first.');return}
+    HBpaint=true;hbPlace(+s.dataset.i)};
+  hv.onpointermove=e=>{if(!HBpaint)return;const el=document.elementFromPoint(e.clientX,e.clientY);const s=el&&el.closest('.slot');if(s)hbPlace(+s.dataset.i)};
+  window.addEventListener('pointerup',()=>HBpaint=false);
+  hv.oncontextmenu=e=>{const s=e.target.closest('.slot');if(!s)return;e.preventDefault();const i=+s.dataset.i;if(HB.cells[i]){HB.cells[i]=null;hbDrawHive()}};
+  hv.ondragover=e=>{if(e.target.closest('.slot'))e.preventDefault()};
+  hv.ondrop=e=>{const s=e.target.closest('.slot');const k=e.dataTransfer.getData('text/bee');if(!s||!BEES[k])return;e.preventDefault();const i=+s.dataset.i;if(i<HB.slots){HB.cells[i]={k,l:HBlevel};hbDrawHive()}};
+  $('#hbPal').onclick=e=>{const b=e.target.closest('.pb');if(!b)return;HBbrush=HBbrush===b.dataset.k?null:b.dataset.k;hbDrawPalette()};
+  $('#hbPal').ondragstart=e=>{const b=e.target.closest('.pb');if(b)e.dataTransfer.setData('text/bee',b.dataset.k)};
+  $('#hbRar').onclick=e=>{const b=e.target.closest('button');if(!b)return;HBfilter=b.dataset.r;hbDrawPalette()};
+  $('#hbSearch').oninput=e=>{HBsearch=e.target.value;hbDrawPalette()};
+  $('#hbErase').onclick=()=>{HBbrush=HBbrush==='__erase'?null:'__erase';hbDrawPalette()};
+  $('#hbFill').onclick=()=>{if(!HBbrush||HBbrush==='__erase')return hbMsg('Pick a bee first.');for(let i=0;i<HB.slots;i++)if(!HB.cells[i])HB.cells[i]={k:HBbrush,l:HBlevel};hbDrawHive()};
+  $('#hbAllLvl').onclick=()=>{HB.cells.forEach(c=>{if(c)c.l=HBlevel});hbDrawHive();hbMsg('All bees set to level '+HBlevel+'.')};
+  $('#hbClear').onclick=()=>{if(HB.cells.some(Boolean)&&!confirmClear())return;HB.cells=Array(HB_MAX).fill(null);hbDrawHive()};
+  $('#hbName').oninput=e=>{HB.name=e.target.value||'My Hive';hbSync()};
+  $('#hbSlots').oninput=e=>{HB.slots=+e.target.value;$('#hbSlotsV').textContent=HB.slots;hbDrawHive()};
+  $('#hbLvl').oninput=e=>{HBlevel=+e.target.value;$('#hbLvlV').textContent=HBlevel};
+  $('#hbLink').onclick=()=>{const url=location.href.split('#')[0]+'#builder/'+hbEncode(HB);copyText(url).then(()=>hbMsg('Link copied! Send it to anyone.'),()=>{prompt('Copy this link:',url)})};
+  $('#hbPng').onclick=async()=>{try{const c=await hbCanvas();const a=document.createElement('a');a.download=(HB.name||'hive').replace(/[^\w\- ]+/g,'')+'.png';a.href=c.toDataURL('image/png');a.click();hbMsg('Picture saved.')}catch(e){hbMsg('Could not make the picture here. Open the wiki from its website link and try again.')}};
+  $('#hbImg').onclick=async()=>{try{const c=await hbCanvas();const blob=await new Promise(r=>c.toBlob(r,'image/png'));await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);hbMsg('Image copied! Paste it into Discord with Ctrl+V.')}catch(e){hbMsg('Your browser blocked copying images. Use Download PNG instead.')}};
+  $('#hbSave').onclick=()=>{const l=hbSaved().filter(x=>x.n!==HB.name);l.unshift({n:HB.name,c:hbEncode(HB)});try{localStorage.setItem('hbSaved',JSON.stringify(l.slice(0,20)));hbMsg('Saved in this browser.')}catch(e){hbMsg('Saving is blocked here. Copy the share link instead.')}hbDrawSaved()};
+  $('#hbSaved').onclick=e=>{const d=e.target.closest('[data-del]');if(!d)return;const l=hbSaved();l.splice(+d.dataset.del,1);try{localStorage.setItem('hbSaved',JSON.stringify(l))}catch(x){}hbDrawSaved()};
+}
+let clearArmed=0;function confirmClear(){if(Date.now()-clearArmed<3000)return true;clearArmed=Date.now();hbMsg('Click Clear again to empty the hive.');return false}
+function copyText(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);return new Promise((res,rej)=>{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy')?res():rej()}catch(e){rej(e)}ta.remove()})}
+function hbLoadImg(src){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src})}
+async function hbCanvas(){
+  try{await document.fonts.ready}catch(e){}
+  const s=hbStats(HB);const sc=2,PADL=40,TOP=120,k=1.25;
+  const vis=[...Array(HB.slots).keys()].map(hbPos);const minY=Math.min(...vis.map(v=>v[1])),maxY=Math.max(...vis.map(v=>v[1]))+HB_H;
+  const hw=HB_WIDTH*k,hh=(maxY-minY)*k;const abl=Object.entries(s.ab).sort((a,b)=>b[1]-a[1]);
+  const rr=RORDER.filter(r=>s.rar[r]),cc=Object.entries(s.col);
+  const panelH=60+rr.length*30+56+cc.length*30+56+abl.length*42+20;
+  const W=PADL*2+hw+420,Hh=TOP+Math.max(hh,panelH,300)+70;
+  const c=document.createElement('canvas');c.width=W*sc;c.height=Hh*sc;const g=c.getContext('2d');g.scale(sc,sc);
+  const F=(w,sz)=>`${w} ${sz}px Fredoka, Nunito, system-ui, sans-serif`;
+  const rrect=(x,y,w,h,r)=>{g.beginPath();g.roundRect?g.roundRect(x,y,w,h,r):g.rect(x,y,w,h)};
+  const grd=g.createLinearGradient(0,0,W,Hh);grd.addColorStop(0,'#ffd75a');grd.addColorStop(1,'#ffa51f');g.fillStyle=grd;g.fillRect(0,0,W,Hh);
+  const icons={};const need=new Set(['icons/logo.png',...HB.cells.slice(0,HB.slots).filter(Boolean).map(x=>ICON(BEES[x.k].Icon)),...abl.map(([a])=>ICON(A.Abilities[a]?.Icon))]);
+  await Promise.all([...need].map(async u=>icons[u]=await hbLoadImg(u)));
+  if(icons['icons/logo.png'])g.drawImage(icons['icons/logo.png'],PADL,24,72,72);
+  g.fillStyle='#3b2a14';g.font=F(700,38);g.fillText(HB.name||'My Hive',PADL+88,66);
+  g.font=F(600,17);g.fillStyle='#5a3f17';g.fillText(`${s.used}/${HB.slots} bees · avg level ${s.avg.toFixed(1)} · Hive Incremental`,PADL+90,92);
+  const hx=PADL,hy=TOP-minY*k;const w=HB_W*k,h=HB_H*k;
+  const hex=(x,y,ww,hh)=>{g.beginPath();g.moveTo(x+ww*.25,y);g.lineTo(x+ww*.75,y);g.lineTo(x+ww,y+hh/2);g.lineTo(x+ww*.75,y+hh);g.lineTo(x+ww*.25,y+hh);g.lineTo(x,y+hh/2);g.closePath()};
+  for(let i=0;i<HB.slots;i++){const [px,py]=hbPos(i);const x=hx+px*k,y=hy+py*k;const cell=HB.cells[i];const b=cell&&BEES[cell.k];
+    hex(x,y,w,h);g.fillStyle='#3b2a14';g.fill();hex(x+4,y+4,w-8,h-8);g.fillStyle=b?RAR[b.Rarity]:'#c98b2e';g.fill();
+    if(b){const im=icons[ICON(b.Icon)];if(im)g.drawImage(im,x+w/2-h*.36,y+h*.1,h*.72,h*.72);
+      g.font=F(700,15);const t=String(cell.l);const tw=g.measureText(t).width+12;g.fillStyle='#3b2a14';rrect(x+w/2-tw/2,y+h-24,tw,19,9);g.fill();g.fillStyle='#fff';g.textAlign='center';g.fillText(t,x+w/2,y+h-9);g.textAlign='left'}}
+  const sx=PADL+hw+40,sy=TOP,pw=380;g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#3b2a14';g.lineWidth=4;rrect(sx,sy,pw,Hh-sy-50,22);g.fill();g.stroke();
+  let y=sy+40;g.fillStyle='#3b2a14';g.font=F(700,22);g.fillText('Rarity',sx+20,y);y+=8;
+  const pillRow=(label,col,n)=>{y+=30;g.fillStyle=col;rrect(sx+20,y-18,120,24,12);g.fill();g.fillStyle='#2a1d0d';g.font=F(600,15);g.fillText(label,sx+30,y);g.font=F(700,18);g.fillText('×'+n,sx+155,y+1)};
+  rr.forEach(r=>pillRow(r,RAR[r],s.rar[r]));if(!rr.length){y+=30;g.font=F(600,15);g.fillText('Empty',sx+20,y)}
+  y+=48;g.fillStyle='#3b2a14';g.font=F(700,22);g.fillText('Colors',sx+20,y);y+=8;
+  cc.forEach(([cn,n])=>pillRow(cn,BCOL[cn]?.Color||'#ddd',n));
+  y+=48;g.fillStyle='#3b2a14';g.font=F(700,22);g.fillText('Abilities',sx+20,y);y+=12;
+  abl.forEach(([a,n])=>{const im=icons[ICON(A.Abilities[a]?.Icon)];if(im)g.drawImage(im,sx+20,y,34,34);g.fillStyle='#3b2a14';g.font=F(600,17);g.fillText(a,sx+62,y+23);g.font=F(700,17);g.textAlign='right';g.fillText('×'+n,sx+pw-22,y+23);g.textAlign='left';y+=42});
+  g.font=F(600,14);g.fillStyle='#5a3f17';g.fillText('Made with the Hive Incremental Wiki · Hive Builder',PADL,Hh-18);
+  return c;
+}
+
 function notFound(){return `${H('Page not found')}<p><a href="#home">Back home</a></p>`}
 // ---------- router ----------
 function route(){const h=decodeURIComponent(location.hash.slice(1)||'home');const [p,...rest]=h.split('/');const arg=rest.join('/');
@@ -452,6 +636,7 @@ function route(){const h=decodeURIComponent(location.hash.slice(1)||'home');cons
   document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.r===navKey));
   $('#side').classList.remove('open');
   if(p==='skills')initTree();
+  if(p==='builder')initBuilder();
   if(!window.__keepScroll)window.scrollTo(0,0);window.__keepScroll=false;
   document.title=(p==='home'?'':(($('#view h1')||{}).textContent||p)+' · ')+'Hive Incremental Wiki';
 }
